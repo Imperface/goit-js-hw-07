@@ -7,7 +7,7 @@ const renderGallery = (gallery, container) => {
     .map(
       (image) =>
         `<li class="gallery__item">
-          <a class="gallery__link">
+          <a class="gallery__link" href="">
             <img class="gallery__image" src="${image.preview}" alt="${image.description}"/>
           </a>
         </li>`
@@ -17,6 +17,7 @@ const renderGallery = (gallery, container) => {
 };
 
 const onImageClick = (e) => {
+  e.preventDefault();
   //check
   if (e.currentTarget === e.target) {
     return;
@@ -27,7 +28,14 @@ const onImageClick = (e) => {
     `<img src="${imageRef.original}" alt="${imageRef.description}" />`
   );
   instance.show();
-};
 
+  document.addEventListener("keydown", onKeydownEscClick);
+  function onKeydownEscClick(e) {
+    if (e.code === "Escape") {
+      instance.close();
+    }
+    document.removeEventListener("keydown", onKeydownEscClick);
+  }
+};
 renderGallery(galleryItems, galleryContainerRef);
 galleryContainerRef.addEventListener("click", onImageClick);
